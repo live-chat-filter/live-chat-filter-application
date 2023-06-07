@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 const configuration = new Configuration({
   organization: 'org-VSrAleue66GAKYoP0xrFLcXB',
-  apiKey: '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',
+  apiKey: '',
 });
 const openai = new OpenAIApi(configuration);
 
