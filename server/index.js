@@ -1,3 +1,6 @@
+const OpenAI = require('openai');
+const { Configuration, OpenAIApi } = OpenAI;
+
 const express = require('express');
 const socketio = require('socket.io');
 const http = require('http');
@@ -7,6 +10,12 @@ const router = require('./router');
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 
 const PORT = process.env.PORT || 5000;
+
+const configuration = new Configuration({
+  organization: 'org-VSrAleue66GAKYoP0xrFLcXB',
+  apiKey: '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',
+});
+const openai = new OpenAIApi(configuration);
 
 const app = express();
 const server = http.createServer(app);
@@ -31,8 +40,20 @@ io.on('connection', (socket) => {
     socket.join(user.room);
     callback();
   });
-  socket.on('sendMessage', (message, callback) => {
+  socket.on('sendMessage', async (message, callback) => {
     console.log(message); //입력된 message
+
+    //순화 - chat gpt
+    const response = await openai.createCompletion({
+      model: 'text-davinci-003',
+      prompt: `"${message}"를 바른 말로 바꿔줘`,
+      max_tokens: 4000,
+      temperature: 0,
+    });
+    console.log(response.data.choices[0].text);
+
+    //
+
     const user = getUser(socket.id);
     io.to(user.room).emit('message', {
       user: user.name,
