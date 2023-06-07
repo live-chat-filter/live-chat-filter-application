@@ -6,7 +6,6 @@ import Join from './Pages/Join';
 function App() {
   return (
     <>
-      {/* <NavBar /> */}
       <Routes>
         <Route path='/chat' element={<Chat />} />
         <Route path='/' element={<Join />} />
