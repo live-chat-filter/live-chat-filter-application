@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 const configuration = new Configuration({
   organization: 'org-VSrAleue66GAKYoP0xrFLcXB',
-  apiKey: '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',
+  apiKey: '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',
 });
 const openai = new OpenAIApi(configuration);
 
@@ -41,7 +41,7 @@ io.on('connection', (socket) => {
     callback();
   });
   socket.on('sendMessage', async (message, callback) => {
-    console.log(message); //입력된 message
+    console.log('message: ', message); //입력된 message
 
     //순화 - chat gpt
     const response = await openai.createCompletion({
