@@ -9,6 +9,11 @@ const cors = require('cors');
 const router = require('./router');
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 
+const { spawn } = require('child_process');
+const pythonProcess = spawn('python', ['compm.py']);
+process.stdin.setEncoding('utf8');
+process.stdout.setEncoding('utf8');
+
 const PORT = process.env.PORT || 5000;
 
 const configuration = new Configuration({
@@ -50,6 +55,22 @@ io.on('connection', (socket) => {
 
   socket.on('sendMessage', async (message, callback) => {
     console.log('message: ', message); //입력된 message
+
+    // compm
+    const data = {
+      speaker: `${socket.id}`,
+      origin_text: `${message}`,
+      types: 'neutral',
+      dialogue: dialogue,
+    };
+
+    const jsonData = JSON.stringify(data);
+    pythonProcess.stdin.write(jsonData);
+    pythonProcess.stdin.end();
+
+    pythonProcess.stdout.on('data', (data) => {
+      console.log(`Python 출력: ${data}`);
+    });
 
     //순화 - chat gpt
     const response = await openai.createCompletion({
