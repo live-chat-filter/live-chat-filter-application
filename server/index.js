@@ -25,8 +25,6 @@ app.use(router);
 
 let dialogue = 0;
 let userCount = 0;
-let num = 0;
-const fs = require('fs');
 
 io.on('connection', (socket) => {
   console.log('새로운 유저가 접속했습니다.');
@@ -52,38 +50,6 @@ io.on('connection', (socket) => {
 
   socket.on('sendMessage', async (message, callback) => {
     console.log('message: ', message); //입력된 message
-
-    //혐오 탐지 - COMPM 모델
-    const inputMsg = [
-      [num, `'${socket.id}'`, `'${message}'`, 'neutral', `'${dialogue}'`],
-    ];
-    num++;
-
-    // CSV 데이터 생성
-    const csvData = inputMsg.map((row) => row.join(',')).join('\n');
-
-    // 기존 CSV 파일 경로
-    const csvFilePath = 'chat.csv';
-
-    // 기존 CSV 파일 읽기
-    fs.readFile(csvFilePath, 'utf-8', (err, existingData) => {
-      if (err) {
-        console.error('CSV 파일을 읽는 중 에러가 발생했습니다.', err);
-        return;
-      }
-
-      // 기존 데이터와 새로운 데이터 병합
-      const updatedData = existingData + '\n' + csvData;
-
-      // 업데이트된 CSV 파일 쓰기
-      fs.writeFile(csvFilePath, updatedData, 'utf-8', (err) => {
-        if (err) {
-          console.error('CSV 파일을 쓰는 중 에러가 발생했습니다.', err);
-          return;
-        }
-        console.log('CSV 파일이 업데이트되었습니다.');
-      });
-    });
 
     //순화 - chat gpt
     const response = await openai.createCompletion({
