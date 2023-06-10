@@ -12,11 +12,11 @@ const addUser = ({ id, name, room }) => {
   );
 
   // Validate name and room
-  if (!name || !room) return { error: '이름과 방이 필요해요.' };
+  if (!name || !room) return { error: "이름과 방이 필요해요." };
 
   // Validate username
   if (existingUser) {
-    return { error: '이미 존재하는 이름입니다.' };
+    return { error: "이미 존재하는 이름입니다." };
   }
 
   // Store user
