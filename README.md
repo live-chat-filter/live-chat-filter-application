@@ -6,5 +6,7 @@
 
 4. cd server , npm run start (server) , 서버는 프로세스 하나에서만 해주면 됨.
 
+5. pip install .
+
 #추가
 chat-gpt를 통한 순화 기능
